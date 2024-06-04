@@ -1,6 +1,6 @@
 #import "../template.typ": *
 #pagebreak()
-= persistence
+= hardware&&raid
 
 == Hard Disk Drives
 
@@ -412,3 +412,5 @@ Do note, though, that these writes can take place in parallel; for example, a wr
 ]
 
 ==== RAID-1 Analysis
+
+== File System

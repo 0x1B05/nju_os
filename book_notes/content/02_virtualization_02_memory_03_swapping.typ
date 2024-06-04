@@ -65,8 +65,8 @@ Indeed, it is odd that we call what is definitely a legal access (to a page mapp
 If a page is not present, the OS is put in charge to handle the page fault.
 
 #tip("Tip")[
- Virtually all systems handle page faults in software; even with a hardware-managed TLB.   
-] 
+Virtually all systems handle page faults in software; even with a hardware-managed TLB.
+]
 
 If a page is not present and has been swapped to disk, the OS will need to swap the page into memory in order to service the page fault.
 
@@ -80,8 +80,8 @@ In many systems, *the page table* is a natural place to store such information. 
 - Finally, a last restart would find the translation in the TLB and thus proceed to fetch the desired data or instruction from memory at the translated physical address.
 
 #tip("Tip")[
- Note that while the I/O is in flight, the process will be in the blocked state. Thus, the OS will be free to run other ready processes while the page fault is being serviced.   
-] 
+Note that while the I/O is in flight, the process will be in the blocked state. Thus, the OS will be free to run other ready processes while the page fault is being serviced.
+]
 
 ==== WHY HARDWARE DOESN’T HANDLE PAGE FAULTS
 
@@ -96,6 +96,7 @@ Before we assumed there is plenty of free memory in which to *page in* a page fr
 
 ==== Hardware
 
+#code(caption: [Page Fault Control Flow - Hardware])[
 ```c
 VPN = (VirtualAddress & VPN_MASK) >> SHIFT
 (Success, TlbEntry) = TLB_Lookup(VPN)
@@ -121,9 +122,11 @@ else // TLB Miss
         else if (PTE.Present == False)
             RaiseException(PAGE_FAULT)
 ```
+]
 
 ==== Software
 
+#code(caption: [Page Fault Control Flow - Software])[
 ```c
 PFN = FindFreePhysicalPage()
 if (PFN == -1) // no free page found
@@ -133,6 +136,7 @@ PTE.present = True // update page table with present
 PTE.PFN = PFN // bit and translation (PFN)
 RetryInstruction() // retry instruction
 ```
+]
 
 The retry will result in a TLB miss, and then, upon another retry, a TLB hit, at which point the hardware will be able to access the desired item.
 

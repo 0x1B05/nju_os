@@ -1,6 +1,6 @@
 #import "../template.typ": *
-#pagebreak()
-= into
+
+= intro
 
 - demo code: https://github.com/remzi-arpacidusseau/ostep-code
 - homework: https://github.com/remzi-arpacidusseau/ostep-homework

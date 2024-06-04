@@ -42,4 +42,5 @@
 #include "content/02_virtualization_02_memory_03_swapping.typ"
 #include "content/02_virtualization_02_memory_04_VM.typ"
 #include "content/03_concurrency.typ"
-#include "content/04_persistence.typ"
+#include "content/04_persistence_01_hardware&&raid.typ"
+#include "content/04_persistence_02_filesystem.typ"
