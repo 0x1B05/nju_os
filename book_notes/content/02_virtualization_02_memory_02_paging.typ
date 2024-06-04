@@ -63,8 +63,8 @@ In the page table above the *physical frame number (PFN)* (also sometimes called
 #image("images/2023-12-14-21-47-41.png", width: 70%)
 
 #tip("Tip")[
- Note the offset stays the same.   
-] 
+Note the offset stays the same.
+]
 
 - Where are these page tables stored?
 - What are the typical contents of the page table?
@@ -99,8 +99,8 @@ A *valid bit* is common to indicate whether the particular translation is valid.
 All the unused space in-between will be marked invalid, and if the process tries to access such memory, it will generate a trap to the OS which will likely terminate the process.
 
 #tip("Tip")[
- the valid bit is crucial for supporting a sparse address space; by simply marking all the unused pages in the address space invalid, we remove the need to allocate physical frames for those pages and thus save a great deal of memory.   
-] 
+The valid bit is crucial for supporting a sparse address space; by simply marking all the unused pages in the address space invalid, we remove the need to allocate physical frames for those pages and thus save a great deal of memory.
+]
 
 ==== others
 
@@ -337,8 +337,8 @@ On a miss:
 An example of an “older” architecture that has hardware-managed TLBs is the Intel x86 architecture, which uses *a fixed multi-level page table*; the current page table is pointed to by the `CR3` register.
 
 #tip("Tip")[
-  CISC  
-] 
+CISC
+]
 
 ==== OS
 

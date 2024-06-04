@@ -148,10 +148,10 @@ struct proc {
 - The register context will hold, for a stopped process, the contents of its registers.
 - When a process is stopped, its registers will be saved to this memory location; by restoring these registers (i.e., placing their values back into the actual physical registers), the OS can resume running the process.
 
-Sometimes a system will have an *initial state* that the process is in when it is being created. Also, a process could be placed in a *final state* where it has exited but has not yet been cleaned up (in UNIX-based systems, this is called the *zombie state1*).
+Sometimes a system will have an *initial state* that the process is in when it is being created. Also, a process could be placed in a *final state* where it has exited but has not yet been cleaned up (in UNIX-based systems, this is called the *zombie state*).
 
 #tip("Tip")[
- *Final state* can be useful as it allows other processes (usually the parent that created the process) to examine the return code of the process and see if the just-finished process executed successfully (usually, programs return zero in UNIX-based systems when they have accomplished a task successfully, and non-zero otherwise).   
+ *Final state* can be useful as it allows other processes (usually the parent that created the process) to examine the return code of the process and see if the just-finished process executed successfully (usually, programs return zero in UNIX-based systems when they have accomplished a task successfully, and non-zero otherwise).
 ]
 
 When finished, the parent will make one final call (e.g., `wait()`) to wait for the completion of the child, and to also indicate to the OS that it can clean up any relevant data structures that referred to the now-extinct process.
@@ -187,7 +187,7 @@ There are a lot of other interfaces for interacting with processes in UNIX syste
 `kill()` system call is used to send signals to a process, including directives to pause, die, and other useful imperatives.
 
 - control-c sends a `SIGINT` (interrupt) to the process (normally terminating it)
-- control-z sends a SIGTSTP (stop) signal thus pausing the process in mid-execution
+- control-z sends a `SIGTSTP` (stop) signal thus pausing the process in mid-execution
   > you can resume it later with a command, e.g., the `fg` built-in command found in many shells.
 
 To use this form of communication, a process should use the `signal()` system call to “catch” various signals.
@@ -217,7 +217,6 @@ THE SUPERUSER (ROOT):A system generally needs a user who can administer the syst
 *In general, the more information about what is going on, the better.*
 
 == Mechanism: Limited Direct Execution
-
 There are a few challenges, however, in building such virtualization machinery.
 
 - *performance*: how can we implement virtualization without adding excessive overhead to the system?
@@ -268,7 +267,6 @@ What should a user process do when it wishes to perform some kind of privileged 
 *System call*, allow the kernel to carefully expose certain key pieces of functionality to user programs.(accessing the file system, creating and destroying processes, communicating with other processes, and allocating more memory...)
 
 ==== Trap
-
 To execute a system call, a program must execute a special trap instruction.
 
 - This instruction simultaneously jumps into the kernel and raises the privilege level to kernel mode
@@ -299,7 +297,6 @@ The kernel does so by setting up *a trap table* at boot time. The OS thus does i
 The OS informs the hardware of the locations of these trap handlers, usually with some kind of special instructions, and thus the hardware knows what to do (i.e., what code to jump to)when system calls and other exceptional events take place.
 
 ==== system call number
-
 To specify the exact system call, *a system-call number* is usually assigned to each system call.
 
 - The user code is thus responsible for placing the desired system-call number in a register or at a specified location on the stack;
@@ -340,7 +337,7 @@ We assume each process has a kernel stack where registers (including general pur
 #image("images/2023-12-12-20-37-13.png", width: 90%)
 
 #tip("Tip")[
-    All privileged inst are highlighted in bold.
+All privileged inst are highlighted in bold.
 ]
 
 There are two phases in the *limited direct execution (LDE)* protocol.
@@ -364,7 +361,7 @@ How does a friendly process give up the CPU in this utopian world?
 
 Most processes, as it turns out, transfer control of the CPU to the OS quite frequently by making system calls.
 
-Systems like this often include an explicit *yield* system call, which does nothing except to transfer control to the OS so it can run other processes.
+Systems like this often include an explicit `yield` system call, which does nothing except to transfer control to the OS so it can run other processes.
 
 Applications also transfer control to the OS when they do something illegal.
 
@@ -378,7 +375,7 @@ Thus, in a cooperative scheduling system, the OS regains control of the CPU by w
 
 What if a process ends up in an infinite loop? In the cooperative approach, your only recourse when a process gets stuck in an infinite loop is to resort to the age-old solution to all problems in computer systems: *reboot the machine*.
 
-How can theOS gain control of the CPU even if processes are not being cooperative? What can the OS do to ensure a rogue process does not take over the machine? *a timer interrupt*
+How can the OS gain control of the CPU even if processes are not being cooperative? What can the OS do to ensure a rogue process does not take over the machine? *a timer interrupt*
 
 - A timer device can be programmed to raise an interrupt every so many milliseconds.
 - When the interrupt is raised, the currently running process is halted, and a pre-configured *interrupt handler* in the OS runs.
@@ -434,34 +431,34 @@ There are two types of register saves/restores that happen during this protocol
 context switch code for xv6:
 
 ```asm
-= void swtch(struct context *old, struct context *new);
-#
-= Save current register context in old
-= and then load register context from new.
+# void swtch(struct context *old, struct context *new);
+# 
+# Save current register context in old
+# and then load register context from new.
 .globl swtch
 swtch:
-= Save old registers
-movl 4(%esp), %eax = put old ptr into eax
-popl 0(%eax)       = save the old IP
-movl %esp, 4(%eax) = and stack
-movl %ebx, 8(%eax) = and other registers
+# Save old registers
+movl 4(%esp), %eax  # put old ptr into eax
+popl 0(%eax)        # save the old IP
+movl %esp, 4(%eax)  # and stack
+movl %ebx, 8(%eax)  # and other registers
 movl %ecx, 12(%eax)
 movl %edx, 16(%eax)
 movl %esi, 20(%eax)
 movl %edi, 24(%eax)
 movl %ebp, 28(%eax)
 
-= Load new registers
-movl 4(%esp), %eax = put new ptr into eax
-movl 28(%eax), %ebp = restore other registers
+# Load new registers
+movl 4(%esp), %eax  # put new ptr into eax
+movl 28(%eax), %ebp # restore other registers
 movl 24(%eax), %edi
 movl 20(%eax), %esi
 movl 16(%eax), %edx
 movl 12(%eax), %ecx
 movl 8(%eax), %ebx
-movl 4(%eax), %esp = stack is switched here
-pushl 0(%eax) = return addr put in place
-ret = finally return into new ctxt
+movl 4(%eax), %esp  # stack is switched here
+pushl 0(%eax)       # return addr put in place
+ret                 # finally return into new ctxt
 ```
 
 === Worried About Concurrency
@@ -474,8 +471,8 @@ The OS does indeed need to be concerned as to what happens if, during interrupt 
 One simple thing an OS might do is disable interrupts during interrupt processing; doing so ensures that when one interrupt is being handled, no other one will be delivered to the CPU.
 
 #tip("Tip")[
-    The OS has to be careful in doing so; disabling interrupts for too long could lead to lost interrupts, which is (in technical terms) bad.
-] 
+The OS has to be careful in doing so; disabling interrupts for too long could lead to lost interrupts, which is (in technical terms) bad.
+]
 
 Operating systems also have developed a number of sophisticated *locking schemes* to protect concurrent access to internal data structures.
 

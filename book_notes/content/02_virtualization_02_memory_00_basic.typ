@@ -28,7 +28,9 @@ Allowing multiple programs to reside concurrently in memory makes *protection* a
 
 === The Address Space
 
-Address Space: it is the running program’s view of memory in the system.
+#definition("Definition")[
+*Address Space*: it is the running program’s view of memory in the system.
+]
 
 - the code of the program (the instructions) have to live in memory
 - a stack to keep track of where it is in the function call chain as well as to allocate local variables and pass parameters and return values to and from routines
@@ -46,19 +48,15 @@ Somehow the OS, in tandem with some *hardware support*, will have to make sure t
 This is the key to virtualization of memory, which underlies every modern computer system in the world.
 
 ==== THE PRINCIPLE OF ISOLATION
+- If two entities are properly isolated from one another:
+  - One can fail without affecting the other.
 
-If two entities are properly isolated from one another:
-
-- one can fail without affecting the other.
-
-examples:
-
+#example("Example")[
 - Memory isolation: running programs cannot affect the operation of the underlying OS
 - Walling off pieces of the OS from other pieces of the OS such as microkernels
+]
 
-=== Goals
-
-goals of a virtual memory (VM) system:
+=== Goals of A VM system:
 
 - transparency: the program shouldn’t be aware of the fact that memory is virtualized
 - efficiency: both in terms of time and space .
@@ -139,7 +137,6 @@ By passing in the correct arguments, `mmap()` can create an anonymous memory reg
 - `realloc()` can also be useful, when you’ve allocated space for something (say, an array), and then need to add something to it: `realloc()` makes a new larger region of memory, copies the old region into it, and returns the pointer to the new region.
 
 == Mechanism: Address Translation
-
 *Efficiency* and *control* together are two of the main goals of any modern operating system.
 
 - the OS, with a little hardware support, tries its best to get out of the way of the running program, to deliver an *efficient* virtualization
@@ -149,7 +146,7 @@ By passing in the correct arguments, `mmap()` can create an anonymous memory reg
   - In virtualizing memory, the hardware will interpose on each memory access, and translate each virtual address issued by the process to a physical address where the desired information is actually stored.
   - almost any well-defined interface can be interposed upon, to add new functionality or improve some other aspect of the system.
   - *One of the usual benefits of such an approach is transparency; the interposition often is done without changing the client of the interface, thus requiring no changes to said client.*
-  ] 
+  ]
 
 The generic technique:
 
@@ -163,8 +160,6 @@ The OS must:
 
 === Assumptions
 
-we will assume for now that
-
 - the user’s address space must be placed *contiguously* in physical memory
 - the size of the address space is not too big
 - it is *less than the size of physical memory*
@@ -174,23 +169,27 @@ we will assume for now that
 
 What we need to do? Why we need such a mechanism?
 
+#code(caption: [Example - C])[
 ```c
 void func() {
     int x = 3000; // thanks, Perry.
     x = x + 3; // this is the line of code we are interested in
     ...
 ```
+]
 
-```asm
+#code(caption: [Example -Assembly])[
+```c
 128: movl 0x0(%ebx), %eax ;load 0+ebx into eax
 132: addl $0x03, %eax ;add 3 to eax register
 135: movl %eax, 0x0(%ebx) ;store eax back to mem
 ```
+]
 
 #image("images/2023-12-14-14-31-58.png", width: 30%)
 
 #tip("Tip")[
-    it presumes that the address of `x` has been placed in the register `ebx`, and the initial value of `x` is 3000
+It presumes that the address of `x` has been placed in the register `ebx`, and the initial value of `x` is 3000.
 ]
 
 The following memory accesses take place:
@@ -233,18 +232,18 @@ So it is translated by:
 physical address = virtual address + base
 ```
 
-==== Example
-
+#example("Example")[
 ```asm
 128: movl 0x0(%ebx), %eax
 ```
 
-when the hardware needs to fetch this instruction,
+When the hardware needs to fetch this instruction,
 
 - It first adds the value to the base register value of 32 KB (32768) to get a physical address of 32896;
 - The hardware then fetches the instruction from that physical address.
 - Next, the processor begins executing the instruction.
 - The process then issues the load from virtual address 15 KB, which the processor takes and again adds to the base register (32 KB), getting the final physical address of 47 KB and thus the desired contents.
+]
 
 ==== base and bounds
 
@@ -312,7 +311,7 @@ when a process is stopped (i.e., not running), it is possible for the OS to move
 - finally, the OS updates the saved base register (in the process structure) to point to the new location.
 
 note how its memory translations are handled by the hardware with no OS intervention:
-#image("images/2023-12-14-15-46-44.png")
+#image("images/2023-12-14-15-46-44.png", width: 80%)
 
 === Summary
 
