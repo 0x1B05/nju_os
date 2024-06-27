@@ -37,7 +37,7 @@
   - 可视化: matplotlib
     - All-in-one: Jupyter (2017 ACM Software System Award)
     - Life is short; you need Python
-- (正好我有一个微积分相关的案例):[Exploration_and_Discovery_of_Mathematical_Concepts](..\demo\01_demo\Exploration_and_Discovery_of_Mathematical_Concepts.ipynb)
+- (正好我有一个微积分相关的案例):#link("..\demo\01_demo\Exploration_and_Discovery_of_Mathematical_Concepts.ipynb")[Exploration_and_Discovery_of_Mathematical_Concepts]
 
 === 为什么学习操作系统?
 
@@ -60,10 +60,7 @@
 
 === 什么是操作系统?
 
-> _Operating System: A body of software, in fact, that is responsible for making it
-easy to run programs (even allowing you to seemingly run many at the same time),
-allowing programs to share memory, enabling programs to interact with devices,
-and other fun stuff like that. (OSTEP)_
+_Operating System: A body of software, in fact, that is responsible for making it easy to run programs (even allowing you to seemingly run many at the same time), allowing programs to share memory, enabling programs to interact with devices, and other fun stuff like that. (OSTEP)_
 
 "programs" 就完了?那么多复杂的程序呢！
 "shared memory, interact with devices, ..."?
@@ -79,7 +76,9 @@ and other fun stuff like that. (OSTEP)_
 
 操作系统 "全部" 的 overview:
 
-> 这门课我们不需要太多关注定义,而是需要重点去关注*全部*
+#tip("Tip")[
+这门课我们不需要太多关注定义,而是需要重点去关注*全部*
+]
 
 - 操作系统如何从一开始变成现在这样的?
 - 三个重要的线索
@@ -118,7 +117,7 @@ and other fun stuff like that. (OSTEP)_
 - 高级语言代码 -> 指令序列 -> 二进制文件 -> 处理器执行
   - 前导课程目标: 能将需求实现; 掌握工具使用; 阅读汇编指令
 
-=== [ RVEmu Demo ](..\demo\01_demo\rvemu\rvemu.c)
+=== #link("..\demo\01_demo\rvemu\rvemu.c")[ RVEmu Demo ]
 
 如果你的指令和设备实现得够完善, 就能直接启动 Linux
 
@@ -299,9 +298,13 @@ PASCAL (1970), C (1972), ...
 
 === 对 "教学" 的一些思考
 
-> _热情且聪明的学生...听说相对论, 量子力学...但是, 当他们学完两年以前那种课程
-(斜面, 静电这样的内容) 后, 许多人就泄气了_ ——The Feynman Lectures on Physics > _Education is not the filling of a pail, but the lighting of a fire_——William
-Butler Yeats
+#tip("Tip")[
+_热情且聪明的学生...听说相对论, 量子力学...但是, 当他们学完两年以前那种课程 (斜面, 静电这样的内容) 后, 许多人就泄气了_ ——The Feynman Lectures on Physics 
+]
+
+#tip("Tip")[
+_Education is not the filling of a pail, but the lighting of a fire_——William Butler Yeats
+]
 
 我们读书的时代 (2009): 大家都说操作系统很难教
 
@@ -338,38 +341,44 @@ Butler Yeats
 - 能在出 bug 时默念 "机器永远是对的, 我肯定能调出来的"
   - 然后开始用正确的工具/方法调试
 
-> 给 "学渣" 们的贴心提示: 不要尝试 "架空学习", 回头补基础
+#tip("Tip")[
+给 "学渣" 们的贴心提示: 不要尝试 "架空学习", 回头补基础
+]
 
 === 0. 学术诚信 (Academic Integrity)
 
 Academic integrity 不是底线, 而是 "自发的要求"
 
-对 "不应该做的事情" 有清楚的认识 不将代码上传到互联网
-主动不参考别人完成的实验代码 不使用他人测试用例 (depends)
-有些行为可能使你得到分数, 但失去应有的训练
+- 对 "不应该做的事情" 有清楚的认识 不将代码上传到互联网
+- 主动不参考别人完成的实验代码 不使用他人测试用例 (depends)
+- 有些行为可能使你得到分数, 但失去应有的训练
 
 === 1. 成为 Power User
 
 感到 Linux/PowerShell/... 很难用?
 
 - 没有建立信心, 没有理解基本逻辑:计算机科学自学指南
-- 没有找对材料/没有多问 "能不能再做点什么":Baidu v.s. Google/Github/SO v.s.
-  ChatGPT
+- 没有找对材料/没有多问 "能不能再做点什么":Baidu v.s. Google/Github/SO v.s. ChatGPT
 - 没有用对工具 (man v.s. tldr; 该用 IDE 就别 Vim):过了入门阶段, 都会好起来
 
 === 2. 学会写代码
 
 写代码 = 创造有趣的东西
 
-- 命令行 + 浏览器就是全世界 > 我们还有 `sympy`, `sage`, `z3`, `rich`, ... 呢
-- 不需要讲语言特性, 设计模式, ...:编就对了; 你自然而然会需要它们的
+- 命令行 + 浏览器 = 全世界
+#tip("Tip")[
+我们还有 `sympy`, `sage`, `z3`, `rich`, ... 呢
+]
+- 不需要讲语言特性, 设计模式, ...: 编就对了; 你自然而然会需要它们的
 
 === 最重要的: Get Your Hands Dirty
 
-> 听课看书都不重要。独立完成编程作业即可理解操作系统。
+#tip("Tip")[
+听课看书都不重要。独立完成编程作业即可理解操作系统。
+]
 
-应用视角 (设计): Mini Labs x 6(使用 OS API 实现 "黑科技" 代码) 硬件视角 (实现):
-OS Labs x 5(自己动手实现一个真正的操作系统) 全部 Online Judge:
+- 应用视角 (设计): Mini Labs x 6(使用 OS API 实现 "黑科技" 代码) 
+- 硬件视角 (实现): OS Labs x 5 (自己动手实现一个真正的操作系统) 全部 Online Judge:
 
 - 代码不规范 -> `-Wall` `-Werror` 编译出错
 - 代码不可移植 -> 编译/运行时出错: `int x = (int)&y;`
@@ -380,7 +389,7 @@ OS Labs x 5(自己动手实现一个真正的操作系统) 全部 Online Judge:
 === Demo：数学概念的探索与发现
 
 ```py
-= Life is short; you need Python.
+# Life is short; you need Python.
 import z3
 import numpy as np
 import sympy as sp
@@ -410,7 +419,10 @@ def plot(f, points=[], draw_label=True, draw_points=True):
         plt.title(f'$y = {sp.latex(f)}$')
 ```
 
-> `z3`是一个求解任何一个逻辑方程组的工具(推箱子, 数独...) > `sympy`符号计算的库.
+#tip("Tip")[
+- `z3`是一个求解任何一个逻辑方程组的工具(推箱子, 数独...) 
+- `sympy`符号计算的库.
+]
 
 用`sympy`做插值拟合.
 
@@ -437,13 +449,13 @@ def interpolate(n=0, xs=[], ys=[]):
     ))
     return f
 
-= -----------------------------------
+# -----------------------------------
 xs = [-1, 0, 1, 2, 3]
 ys = [-1, 2, 1, 4, 5]
 f = interpolate(xs=xs, ys=ys)
 plot(f, list(zip(xs, ys)), True)
 
-= -----------------------------------
+# -----------------------------------
 n = 10
 xs = np.arange(-1, 1, 1 / n)
 ys = np.sin(xs * n)
@@ -451,7 +463,7 @@ f = interpolate(xs=xs, ys=ys)
 plot(f, list(zip(xs, ys)), draw_points=True, draw_label=False)
 f
 
-= -----------------------------------
+# -----------------------------------
 sp.simplify(interpolate(3))
 ```
 
@@ -470,13 +482,13 @@ sp.simplify(interpolate(3))
 
 ```py
 squares = [x*2 for x in range(10)]
-= 输出: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+# 输出: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 even_numbers = [x for x in numbers if x % 2 == 0]
-= 输出: [2, 4, 6, 8, 10]
+# 输出: [2, 4, 6, 8, 10]
 string = "Hello World"
 upper_letters = [char for char in string if char.isupper()]
-= 输出: ['H', 'W']
+# 输出: ['H', 'W']
 ```
 
 ==== 格式化字符串
@@ -519,7 +531,7 @@ DISPLAY = '''
     DDDDDDDDD
 ''' 
 
-= STFW: ANSI Escape Code
+# STFW: ANSI Escape Code
 CLEAR = '\033[2J\033[1;1f'
 BLOCK = {
     0: '\033[37m░\033[0m',
@@ -541,10 +553,15 @@ for line in fileinput.input():
     print(CLEAR + pic)
 ```
 
-> `CLEAR` 是一个 ANSI 转义码，用于清除控制台屏幕，并将光标移动到屏幕左上角；`BLOCK` 是一个字典，它将数字
-0 和 1 映射到不同的颜色块，其中数字 0 对应着浅色的块，数字 1 对应着深色的块。 > `fileinput.input()` 循环遍历输入的行。在每次循环中，代码使用 `exec()` 函数执行当前行的代码，将其中定义的变量加载到当前上下文中。这样，可以通过在输入中设置变量的值来控制七段显示器的显示。
-> 通过 `globals()` 函数获取全局变量中与该字母对应的变量（例如
-A、B、C、D、E、F、G），并根据变量的值选择对应的颜色块进行替换。=== RVEmu demo
+#tip("Tip")[
+- `CLEAR` 是一个 ANSI 转义码，用于清除控制台屏幕，并将光标移动到屏幕左上角；`BLOCK` 是一个字典，它将数字 0 和 1 映射到不同的颜色块，其中数字 0 对应着浅色的块，数字 1 对应着深色的块。 
+- `fileinput.input()` 循环遍历输入的行。在每次循环中，代码使用 `exec()` 函数执行当前行的代码，将其中定义的变量加载到当前上下文中。这样，可以通过在输入中设置变量的值来控制七段显示器的显示。
+- 通过 `globals()` 函数获取全局变量中与该字母对应的变量（例如 `A`、`B`、`C`、`D`、`E`、`F`、`G`），并根据变量的值选择对应的颜色块进行替换。
+]
+
+=== RVEmu demo
+
+#code(caption: [RVEmu demo])[
 ```c
 #include <assert.h>
 #include <stdbool.h>
@@ -626,3 +643,4 @@ int main(int argc, char *argv[]) {
     }
 }
 ```
+]

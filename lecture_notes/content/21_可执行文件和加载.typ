@@ -26,7 +26,7 @@
 
 状态迁移的描述: 代码
 
-RTFM: [ System V ABI ](https://jyywiki.cn/pages/OS/manuals/sysv-abi.pdf)
+RTFM: #link("https://jyywiki.cn/pages/OS/manuals/sysv-abi.pdf")[ System V ABI ]
 
 - binutils 中的工具可以让我们查看其中的重要信息
 - ChatGPT 可以帮我们解释不明白的概念
@@ -42,4 +42,4 @@ RTFM: [ System V ABI ](https://jyywiki.cn/pages/OS/manuals/sysv-abi.pdf)
 直接把代码 mmap 到内存
 
 - 然后跳转过去即可
-- (你可以想象 execve 里就做了这件事)
+- (你可以想象 `execve` 里就做了这件事)

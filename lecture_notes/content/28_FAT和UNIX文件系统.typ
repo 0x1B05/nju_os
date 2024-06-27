@@ -119,7 +119,7 @@ FAT-12/16/32 (FAT entry，即 “next 指针” 的大小)
 
 === “File Allocation Table” 文件系统
 
-[ RTFM ](https://jyywiki.cn/pages/OS/manuals/MSFAT-spec.pdf) 得到必要的细节
+#link("https://jyywiki.cn/pages/OS/manuals/MSFAT-spec.pdf")[ RTFM ] 得到必要的细节
 
 - 诸如 tutorial、博客都不可靠
 - 还会丢失很多重要的细节
@@ -226,7 +226,7 @@ entries; most have 20 or fewer |
 
 - 文件 (inode) 数量
 - block group 信息
-- [ ext2.h ](https://jyywiki.cn/pages/OS/2023/p/ext2.h) 里有你需要知道的一切
+- #link("https://jyywiki.cn/pages/OS/2023/p/ext2.h")[ ext2.h ] 里有你需要知道的一切
 
 === ext2 inode
 

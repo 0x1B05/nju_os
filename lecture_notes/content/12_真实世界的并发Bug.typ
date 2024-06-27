@@ -72,8 +72,9 @@ assert not (mode == XRay and mirror == Off)
 
 === 死锁 (Deadlock)
 
-> A deadlock is a state in which each member of a group is waiting for another
-member, including itself, to take action.
+#tip("Tip")[
+A deadlock is a state in which each member of a group is waiting for another member, including itself, to take action.
+]
 
 出现线程 “互相等待” 的情况
 

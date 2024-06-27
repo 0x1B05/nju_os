@@ -34,8 +34,7 @@ pmap (1) - report memory of a process
   - “段” 的内存可以根据权限访问
   - 不在段内/违反权限的内存访问 触发 SIGSEGV
 
-gpt 回答:what kind of tools can help me print out the address space of a linux
-process?
+gpt 回答:what kind of tools can help me print out the address space of a linux process?
 
 - pmap
 - cat /proc/[pid]/maps
@@ -55,7 +54,7 @@ Hello, OS World
 立刻执行完毕, 那应该怎么直接看地址空间呢?
 
 1. 可以找个不会终止的程序, 例如 shell
-2. 在 minimal 里面加个死讯和
+2. 在 minimal 里面加个死循环
 3. gdb 来暂停, 在暂停的时候查看地址空间
 
 ```
@@ -65,7 +64,9 @@ info inferiors-> 得到pid
 !pmap pid
 ```
 
-> `!`可以在 gdb 里面执行命令, 就像 vim 里面一样
+#tip("Tip")[
+`!`可以在 gdb 里面执行命令, 就像 vim 里面一样
+]
 
 ```
 (gdb) !pmap 6726
@@ -231,11 +232,10 @@ char mem[64 MB];
 ```
 
 在这个进程状态机被创建的一瞬间, 还没有`printf`, 而 pc 位于`/lib64/ld-linux-x86-64.so.2`.
-静态链接初始化之后, pc 是 elf 文件里标记的 entry, 而动态链接实际上有个
-interpreter, 这个解释器就是`/lib64/ld-linux-x86-64.so.2`.(用另外一个程序来执行当前的程序.所以他就是一个加载器
-loader.)
 
-在 main 上面打个断点再 continue 查看.
+静态链接初始化之后, pc 是 elf 文件里标记的 entry, 而动态链接实际上有个 interpreter, 这个解释器就是`/lib64/ld-linux-x86-64.so.2`. (用另外一个程序来执行当前的程序. 所以他就是一个加载器 loader.)
+
+在 `main` 上面打个断点再 `continue` 查看.
 
 ```gdb
 (gdb) !pmap 22293
@@ -266,8 +266,7 @@ loader.)
 ```
 
 libc 归来! 使用 strace
-查看动态链接和静态链接的程序发现两者的差距很大.静态链接很快就开始执行代码,
-但是动态链接有很多操作, 这很多操作都是为了把需要的库搬到地址空间.
+查看动态链接和静态链接的程序发现两者的差距很大.静态链接很快就开始执行代码, 但是动态链接有很多操作, 这很多操作都是为了把需要的库搬到地址空间.
 
 更改 hello.c:
 
@@ -306,32 +305,14 @@ libc 归来! 使用 strace
 
 问 gpt `vvar`和`vdso`是什么?
 
-In a Linux process memory space, `vvar` and `vdso` are two special regions that
-serve important system-level functions:
-
-1. vvar: `vvar` stands for "virtual dynamic shared object section." It is a small
-  region of memory reserved for the kernel to store certain variables that are
-  used by the process but need to be kept separate from the process's own data.
-  These variables include the thread-local storage (TLS) pointer, which points to
-  the thread-specific data area (TSD) used by the thread-local storage mechanism.
-  The `vvar` region is mapped into the process's memory space when the process is
-  started, and its address is fixed at `0xffffffffff600000`. This address is
-  outside the normal user-space address range and is reserved for kernel use.
+In a Linux process memory space, `vvar` and `vdso` are two special regions that serve important system-level functions:
+1. vvar: `vvar` stands for "virtual dynamic shared object section." It is a small region of memory reserved for the kernel to store certain variables that are used by the process but need to be kept separate from the process's own data. These variables include the thread-local storage (TLS) pointer, which points to the thread-specific data area (TSD) used by the thread-local storage mechanism. The `vvar` region is mapped into the process's memory space when the process is started, and its address is fixed at `0xffffffffff600000`. This address is outside the normal user-space address range and is reserved for kernel use.
   - The current time(`time_t`)
   - The page size of the system
   - The process's CPU clock frequency
   - ....
-2. vdso: `vdso` stands for "virtual dynamic shared object." It is another special
-  region of memory that contains a set of system call wrappers implemented in
-  userspace, allowing user applications to directly access some frequently used
-  kernel functions without having to switch to kernel mode via the `syscall` instruction.
-  This method is faster and more efficient than traditional system call
-  invocation, as it avoids expensive context switches between user and kernel
-  modes. The `vdso` region is also mapped into the process's memory space at a
-  fixed address (`0x7fffb5f77000` on x86-64 architectures), and it is loaded into
-  the process's memory by the kernel during process startup. The contents of `vdso` are
-  updated dynamically by the kernel to reflect changes in the kernel's
-  implementation of system calls, so they always match the running kernel version.
+2. vdso: `vdso` stands for "virtual dynamic shared object." It is another special region of memory that contains a set of system call wrappers implemented in userspace, allowing user applications to directly access some frequently used kernel functions without having to switch to kernel mode via the `syscall` instruction.
+  This method is faster and more efficient than traditional system call invocation, as it avoids expensive context switches between user and kernel modes. The `vdso` region is also mapped into the process's memory space at a fixed address (`0x7fffb5f77000` on x86-64 architectures), and it is loaded into the process's memory by the kernel during process startup. The contents of `vdso` are updated dynamically by the kernel to reflect changes in the kernel's implementation of system calls, so they always match the running kernel version.
   - `gettimeofday()`
 
 > 即不进入内核的系统调用.
@@ -345,9 +326,7 @@ vdso (7): Virtual system calls: 只读的系统调用也许可以不陷入内核
 - 例子: `time (2)`
   - 时间：内核维护秒级的时间 (所有进程映射同一个页面)
 - 例子: `gettimeofday (2)`
-  - [ RTFSC
-    ](https://elixir.bootlin.com/linux/latest/source/lib/vdso/gettimeofday.c#L49)
-    (非常聪明的实现)
+  - #link("https://elixir.bootlin.com/linux/latest/source/lib/vdso/gettimeofday.c#L49")[ RTFSC ] (非常聪明的实现)
 - 更多的例子：问 GPT 吧！
   - 计算机系统里没有魔法！我们理解了进程地址空间的全部！
 
@@ -492,14 +471,14 @@ with open('/dev/sda', 'rb') as fp:
 Game Genie: 一个 Look-up Table (LUT)
 
 - 当 CPU 读地址 a 时读到 x，则替换为 y
-  - [ NES Game Genie Technical Notes
-    ](https://tuxnes.sourceforge.net/gamegenie.html) ([ 专利
-    ](https://patents.google.com/patent/EP0402067A2/en), [ How did it work?
-    ](https://www.howtogeek.com/706248/what-was-the-game-genie-cheat-device-and-how-did-it-work/))
-  - 今天我们有 [ Intel Processor Trace
-    ](https://perf.wiki.kernel.org/index.php/Perf_tools_support_for_Intel®\_Processor_Trace)
+  - #link("https://tuxnes.sourceforge.net/gamegenie.html")[ NES Game Genie Technical Notes ] 
+  - #link("https://patents.google.com/patent/EP0402067A2/en")[ 专利 ]
+  - #link("https://www.howtogeek.com/706248/what-was-the-game-genie-cheat-device-and-how-did-it-work/")[ How did it work? ]
+  - 今天我们有 #link("https://perf.wiki.kernel.org/index.php/Perf_tools_support_for_Intel®\_Processor_Trace")[ Intel Processor Trace ]
 
-> 物理外挂, 简单稳定有效.
+#tip("Tip")[
+物理外挂, 简单稳定有效.
+]
 
 === 入侵进程地址空间 (1): 金山游侠
 
@@ -510,7 +489,9 @@ Game Genie: 一个 Look-up Table (LUT)
 - 它就是游戏的 (阉割版) “调试器”
 - 我们也可以在 Linux 中实现它 (man 5 proc)
 
-> 第一次扫描内存里的金钱数, 会有许多匹配. 减少/增加了钱数, 再扫描相应的钱数, 就可以直接找到相应的存储金钱的地址.
+#tip("Tip")[
+第一次扫描内存里的金钱数, 会有许多匹配. 减少/增加了钱数, 再扫描相应的钱数, 就可以直接找到相应的存储金钱的地址.
+]
 
 === 入侵进程地址空间 (2): 按键精灵
 
@@ -520,17 +501,16 @@ Game Genie: 一个 Look-up Table (LUT)
 
 - 做个驱动 (可编程键盘/鼠标)
 - 利用操作系统/窗口管理器提供的 API
-  - [ xdotool ](https://github.com/jordansissel/xdotool) (我们用这玩意测试 vscode
+  - #link("https://github.com/jordansissel/xdotool")[ xdotool ] (我们用这玩意测试 vscode
     的插件)
-  - [ evdev ](https://www.kernel.org/doc/html/latest/input/input.html)
+  - #link("https://www.kernel.org/doc/html/latest/input/input.html")[ evdev ]
     (按键显示脚本；主播常用)
 
 === 入侵进程地址空间 (3): 变速齿轮
 
 调整游戏的逻辑更新速度
 
-比如某[ 神秘公司
-](https://baike.baidu.com/item/台湾天堂鸟资讯有限公司/8443017)慢到难以忍受的跑图和战斗
+比如某#link("https://baike.baidu.com/item/台湾天堂鸟资讯有限公司/8443017")[ 神秘公司 ]慢到难以忍受的跑图和战斗
 
 本质：程序是状态机
 #image("images/2023-12-06-19-04-32.png")

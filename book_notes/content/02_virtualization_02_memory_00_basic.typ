@@ -246,7 +246,6 @@ When the hardware needs to fetch this instruction,
 ]
 
 ==== base and bounds
-
 The bounds register is there to help with protection. A small aside about bound registers, which can be defined in one of two ways:
 
 - it holds the _size_ of the address space.
@@ -310,7 +309,7 @@ when a process is stopped (i.e., not running), it is possible for the OS to move
 - then, the OS copies the address space from the current location to the new location;
 - finally, the OS updates the saved base register (in the process structure) to point to the new location.
 
-note how its memory translations are handled by the hardware with no OS intervention:
+Note how its memory translations are handled by the hardware with no OS intervention:
 #image("images/2023-12-14-15-46-44.png", width: 80%)
 
 === Summary
@@ -318,7 +317,7 @@ note how its memory translations are handled by the hardware with no OS interven
 inefficiencies: because the process stack and heap are not too big, all of the space between the two is simply wasted. This type of waste is usually called internal fragmentation, as the space inside the allocated unit is not all used (i.e., is fragmented) and thus wasted.
 
 #tip("Tip")[
- A different solution might instead place a fixed-sized stack within the address space, just below the code region, and a growing heap below that. However, this limits flexibility by making recursion and deeply-nested function calls challenging, and thus is something we hope to avoid.   
+A different solution might instead place a fixed-sized stack within the address space, just below the code region, and a growing heap below that. However, this limits flexibility by making recursion and deeply-nested function calls challenging, and thus is something we hope to avoid.
 ]
 
-Our first attempt will be a slight generalization of base and bounds known as *segmentation*
+Our first attempt will be a slight generalization of base and bounds known as *segmentation*.

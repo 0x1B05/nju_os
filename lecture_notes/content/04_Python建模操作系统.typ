@@ -107,9 +107,10 @@ def main():
     sys_sched()
 ```
 
-> 文件是操作系统的对象, 文件描述符就是一个指向操作系统对象的指针. >
-进程和线程也是操作系统的一个非常重要的对象, 即执行的状态机.线程共享内存,
-进程有独立的内存.
+#tip("Tip")[
+- 文件是操作系统的对象, 文件描述符就是一个指向操作系统对象的指针.
+- 进程和线程也是操作系统的一个非常重要的对象, 即执行的状态机.线程共享内存, 进程有独立的内存.
+]
 
 状态机:
 
@@ -153,7 +154,9 @@ def sys_sched():
     raise NotImplementedError('No idea how')
 ```
 
-> `NotImplementedError`是个好的习惯.
+#tip("Tip")[
+`NotImplementedError`是个好的习惯.
+]
 
 我们需要
 
@@ -232,7 +235,7 @@ void sys_spawn(void *(*fn)(void *), void *args) {
 
 原理与刚才的 “最小操作系统玩具” 类似
 
-- [ mosaic.py ](https://jyywiki.cn/pages/OS/2023/mosaic/mosaic.py) - 500
+- #link("https://jyywiki.cn/pages/OS/2023/mosaic/mosaic.py")[ mosaic.py ] - 500
   行建模操作系统
 - 进程/线程都是 Generator Object
 - 共享内存用 heap 变量访问
@@ -279,8 +282,9 @@ def main():
     sys_write('Hello, OS World')
 ```
 
-> 为什么 choose 是系统调用, 因为不依靠外界,
-是不可能靠纯粹的计算来实现真正的随机数的.
+#tip("Tip")[
+为什么 `choose` 是系统调用, 因为不依靠外界, 是不可能靠纯粹的计算来实现真正的随机数的.
+]
 
 py 程序状态机:
 
@@ -365,11 +369,13 @@ Type "help", "copyright", "credits" or "license" for more information.
 '1101010'
 ```
 
-> generator 就是一个状态机. 一种是纯粹的计算, 一种是系统调用, 在 generator
-里面就是 yield.`yield`可以把里面的信息暴露给外面,
-然后把控制权交给外面.外面还可以把信息传回来.
+#tip("Tip")[
+generator 就是一个状态机. 一种是纯粹的计算, 一种是系统调用, 在 generator 里面就是 yield.`yield`可以把里面的信息暴露给外面, 然后把控制权交给外面.外面还可以把信息传回来.
+]
 
-> 怎么写一个装饰器?
+#tip("Tip")[
+怎么写一个装饰器?
+]
 
 === C 语言版玩具
 

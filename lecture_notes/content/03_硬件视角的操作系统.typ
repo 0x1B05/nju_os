@@ -43,17 +43,17 @@ Bare-metal 与厂商的约定
   - 厂商自由处理这个地址上的值
   - Memory-mapped I/O
 
-> reset 后,cpu 就是无情的执行指令的机器, 主板生产厂商只要在 reset pc
-所指向的位置放上一段代码, 就会运行. >
-厂商会在主板上放一个小的固件芯片,这个芯片里面存储有代码, 有数据.
-比如重启电脑时候的 logo, 就是厂商写进去的 ROM(只读存储器,
-存储系统引导程序)里的一部分. 这是主板厂商和 cpu 厂商之间的约定.
+#tip("Tip")[
+reset 后,cpu 就是无情的执行指令的机器, 主板生产厂商只要在 reset pc 所指向的位置放上一段代码, 就会运行. 
+]
 
-厂商还会和操作系统开发者再有一层约定, 厂商为操作系统开发者提供 Firmware
+#tip("Tip")[
+厂商会在主板上放一个小的固件芯片,这个芯片里面存储有代码, 有数据. 比如重启电脑时候的 logo, 就是厂商写进去的 ROM(只读存储器, 存储系统引导程序)里的一部分. 这是主板厂商和 cpu 厂商之间的约定. 厂商还会和操作系统开发者再有一层约定, 厂商为操作系统开发者提供 Firmware
+]
 
-> Firmware 嵌入式设备中的一种软件类型, 它是一组指令和数据,
-被存储在硬件设备的非易失性存储器(如闪存, EEPROM).与操作系统不同,
-固件通常被永久地编程到硬件设备中, 以执行特定的功能或控制设备的操作.
+#tip("Tip")[
+Firmware 嵌入式设备中的一种软件类型, 它是一组指令和数据, 被存储在硬件设备的非易失性存储器(如闪存, EEPROM).与操作系统不同, 固件通常被永久地编程到硬件设备中, 以执行特定的功能或控制设备的操作.
+]
 
 - 管理硬件和系统配置
 - 把存储设备上的代码加载到内存
@@ -78,12 +78,11 @@ CPU Reset ([ Intel® 64 and IA-32 Architectures Software Developer’s Manual
 
 Reset 后处理器都从固定地址 (Reset Vector) 启动
 
-- MIPS: 0xbfc00000
+- MIPS: `0xbfc00000`
   - Specification 规定
-- ARM: 0x00000000
+- ARM: `0x00000000`
   - Specification 规定
-  - 允许配置 Reset Vector Base Address Register(这样软件可以自由设置, 可以不从
-    0x00000000 来启动.)
+  - 允许配置 Reset Vector Base Address Register(这样软件可以自由设置, 可以不从 `0x00000000` 来启动.)
 - RISC-V: Implementation defined
   - 给厂商最大程度的自由
 
@@ -98,9 +97,9 @@ Firmware 负责加载操作系统
 
 - 从 PC 取指令, 译码, 执行...
 - 开始执行厂商 "安排好" 的 Firmware 代码
-  - x86 Reset Vector 是一条向 Firmware 跳转的 jmp 指令
+  - x86 Reset Vector 是一条向 Firmware 跳转的 `jmp` 指令
 
-Firmware: [ BIOS vs. UEFI ](https://www.zhihu.com/question/21672895)
+Firmware: #link("https://www.zhihu.com/question/21672895")[ BIOS vs. UEFI ]
 
 - 一个小 "操作系统"
   - 管理, 配置硬件；加载操作系统
@@ -110,8 +109,7 @@ Firmware: [ BIOS vs. UEFI ](https://www.zhihu.com/question/21672895)
 
 ==== 为什么需要 UEFI？
 
-今天的 Firmware 面临麻烦得多的硬件： 指纹锁, USB 转接器上的 Linux-to-Go 优盘,
-山寨网卡上的 PXE 网络启动, USB 蓝牙转接器连接的蓝牙键盘, ...
+今天的 Firmware 面临麻烦得多的硬件： 指纹锁, USB 转接器上的 Linux-to-Go 优盘, 山寨网卡上的 PXE 网络启动, USB 蓝牙转接器连接的蓝牙键盘, ...
 
 这些设备都需要 "驱动程序" 才能访问 解决 BIOS 逐渐碎片化的问题
 
@@ -119,22 +117,18 @@ Firmware: [ BIOS vs. UEFI ](https://www.zhihu.com/question/21672895)
 
 BIOS 提供一个机制:将程序员的代码载入内存
 
-- Legacy BIOS (逐个扫描, A 盘,B 盘..)把第一个可引导设备的第一个 512
-  字节(MBR,Master Boot Record, 0 号扇区)加载到物理内存的 7c00 位置
+- Legacy BIOS (逐个扫描, A 盘,B 盘..)把第一个可引导设备的第一个 512 字节(MBR,Master Boot Record, 0 号扇区)加载到物理内存的 `0x7c00` 位置
   - 此时处理器处于 16-bit 模式
-  - 规定 CS:IP = 0x7c00, (R[CS] << 4) | R[IP] == 0x7c00
-    - 可能性 1：CS = 0x07c0, IP = 0
-    - 可能性 2：CS = 0, IP = 0x7c00
+  - 规定 CS:IP = `0x7c00`, `(R[CS] << 4) | R[IP] == 0x7c00`
+    - 可能性 1：`CS = 0x07c0`, `IP = 0`
+    - 可能性 2：`CS = 0`, `IP = 0x7c00`
   - 其他没有任何约束
 
-虽然最多只有 446 字节代码 (64B 分区表 + 2B 标识) 但控制权已经回到程序员手中了！
-你甚至可以让 ChatGPT 给你写一个 Hello World, 当然, 他是抄作业的
-(而且是有些小问题的)
+虽然最多只有 446 字节代码 (64B 分区表 + 2B 标识) 但控制权已经回到程序员手中了！ 你甚至可以让 ChatGPT 给你写一个 Hello World, 当然, 他是抄作业的 (而且是有些小问题的)
 
 ===== 举例
 
-cpu reset(intel) CS:IP(0xffffh:0x0000h) 形成 physical address 0xffff0->Firmware
-把 MBR 加载到内存的 0x7c00
+cpu reset(intel) CS:IP(`0xffffh`:`0x0000h`) 形成 physical address `0xffff0-`>Firmware 把 MBR 加载到内存的 0x7c00
 
 ```
                         0x7c00
@@ -153,7 +147,9 @@ cpu reset(intel) CS:IP(0xffffh:0x0000h) 形成 physical address 0xffff0->Firmwar
 为了标记一个分区可不可以启动, 会在 512 字节的最后写上两个字节的 magic number:
 0x55,0xAA,表示可以启动.
 
-> 追问, 到底哪些指令把这个 512 字节搬到了内存.
+#tip("Tip")[
+追问, 到底哪些指令把这个 512 字节搬到了内存.
+]
 
 === 能不能看一下代码？
 
@@ -164,9 +160,7 @@ _Talk is cheap. Show me the code. ——Linus Torvalds_
 计算机系统公理：你想到的就一定有人做到
 
 模拟方案：QEMU 传奇黑客, 天才程序员 Fabrice Bellard 的杰作 QEMU, A fast and
-portable dynamic translator (USENIX ATC'05) Android Virtual Device, VirtualBox,
-... 背后都是 QEMU 真机方案：JTAG (Joint Test Action Group) debugger 一系列
-(物理) 调试寄存器, 可以实现 gdb 接口 (!!!)
+portable dynamic translator (USENIX ATC'05) Android Virtual Device, VirtualBox, ... 背后都是 QEMU 真机方案：JTAG (Joint Test Action Group) debugger 一系列 (物理) 调试寄存器, 可以实现 gdb 接口 (!!!)
 
 === ️🌶️ UEFI 上的操作系统加载
 
@@ -184,15 +178,15 @@ portable dynamic translator (USENIX ATC'05) Android Virtual Device, VirtualBox,
 - 设备驱动框架
 - 更多的功能, 例如 Secure Boot, 只能启动 "信任" 的操作系统
 
-> 和 legacy bios 基本上一样的. 只是多了一些额外的约定.
+#tip("Tip")[
+和 legacy bios 基本上一样的. 只是多了一些额外的约定.
+]
 
 === 小插曲：Hacking Firmware (1998)
 
 Firmware 通常是只读的 (当然)...
 
-Intel 430TX (Pentium) 芯片组允许写入 Flash ROM 只要向 Flash BIOS 写入特定序列,
-Flash ROM 就变为可写 留给 Firmware 更新的通道 要得到这个序列其实并不困难
-似乎文档里就有 🤔 Boom... CIH 病毒的作者陈盈豪被逮捕, 但并未被定罪
+Intel 430TX (Pentium) 芯片组允许写入 Flash ROM 只要向 Flash BIOS 写入特定序列, Flash ROM 就变为可写 留给 Firmware 更新的通道 要得到这个序列其实并不困难, 似乎文档里就有 🤔 Boom... CIH 病毒的作者陈盈豪被逮捕, 但并未被定罪
 
 == 实现最小 "操作系统"
 
@@ -329,8 +323,8 @@ if (elf32->e_machine == EM_X86_64) {
 
 支持固定的 "线程"
 
-- Ta ​- while (1) printf("a");
-- Tb ​- while (1) printf("b");
+- Ta - while (1) printf("a");
+- Tb - while (1) printf("b");
   - 允许并发执行
 
 == 编程实践
@@ -488,20 +482,21 @@ Breakpoint 1, 0x0000000000007c00 in ?? ()
 `-s`: Shorthand for `-gdb tcp::1234`, i.e. open a gdbserver on TCP port 1234
 (see the GDB usage chapter in the System Emulation Users Guide).
 
-> 0xffff0 这个地址处的代码是一个跳转指令, 用于将控制权转移到实际的 BIOS
-代码所在的内存地址.
+#tip("Tip")[
+`0xffff0` 这个地址处的代码是一个跳转指令, 用于将控制权转移到实际的 BIOS 代码所在的内存地址.
+]
 
 ==== 把调试步骤存储成文件
 
 调过头了怎么办?存储成文件`init.gdb`
 
 ```gdb
-= Kill process (QEMU) on gdb exits
+# Kill process (QEMU) on gdb exits
 define hook-quit
   kill
 end
 
-= Connect to remote
+# Connect to remote
 target remote localhost:1234
 file a.out
 wa *0x7c00
@@ -513,7 +508,7 @@ continue
 ```makefile
 debug: mbr.img
   qemu-system-x86_64 -s -S $< &  = Run QEMU in background
-  gdb -x init.gdb  = RTFM: gdb (1)
+  gdb -x init.gdb  # RTFM: gdb (1)
 ```
 
 `make debug` 很丝滑地进入 `0x7c00` 的调试界面.然后`q`还能丝滑地退出 gdb.
@@ -553,8 +548,9 @@ New value = 2081765005
 
 am 的 makefile 让我们成功生成了直接在硬件上运行的程序.
 
-> CMake 背后做了很多东西, 不清楚细节很难调试. Makefile
-可以把底层所有的细节都展现出来.
+#tip("Tip")[
+CMake 背后做了很多东西, 不清楚细节很难调试. Makefile 可以把底层所有的细节都展现出来.
+]
 
 看源码很难, 看执行的过程就会容易一些.(状态机的描述和状态机的状态转移)
 

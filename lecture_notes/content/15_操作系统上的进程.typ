@@ -50,12 +50,13 @@ void yield() {
 int $0x81
 ```
 
-> x86 架构中的`int`指令用于产生一个软中断（software
-interrupt）或异常该指令的语法如下： `int imm8`. 其中，`imm8`是一个立即数（immediate），表示中断向量号（interrupt
-vector number）。这个中断向量号对应着一段中断处理程序（interrupt
-handler）的地址，当`int`指令被执行时，处理器将跳转到相应的中断处理程序。 > 在
-x86 架构中，有一些预定义的中断向量号，用于处理特定的中断事件。例如，中断向量号为
-0x80 的中断用于系统调用（system call）操作，在 Linux 等操作系统中经常被使用。
+#tip("Tip")[
+x86 架构中的`int`指令用于产生一个软中断（software interrupt）或异常该指令的语法如下： `int imm8`. 其中，`imm8`是一个立即数（immediate），表示中断向量号（interrupt vector number）。这个中断向量号对应着一段中断处理程序（interrupt handler）的地址，当`int`指令被执行时，处理器将跳转到相应的中断处理程序。 
+]
+
+#tip("Tip")[
+在 x86 架构中，有一些预定义的中断向量号，用于处理特定的中断事件。例如，中断向量号为 `0x80` 的中断用于系统调用（system call）操作，在 Linux 等操作系统中经常被使用。
+]
 
 执行完`int $0x81后`,再看 rsp 的值:
 
@@ -73,7 +74,9 @@ $8 = 0x20a788
 
 #image("images/2023-11-25-20-53-16.png")
 
-> rdi 是函数调用的第一个参数
+#tip("Tip")[
+`rdi` 是函数调用的第一个参数
+]
 
 这部分代码十分精妙, 需要花时间去阅读和调试. 不要忘了给 am 开`-g`
 
@@ -90,7 +93,9 @@ $8 = 0x20a788
   - `CreateProcess(exec_file)`
     - 指定一个二进制代码, 在系统里面创建一个新的状态机(windows api)
   - `TerminateProcess()`
-    > 提供怎样的 syscall 是自己可以设计的
+  #tip("Tip")[
+  提供怎样的 syscall 是自己可以设计的
+  ]
 
 从线程到进程：虚拟存储系统
 
@@ -140,7 +145,9 @@ fork() {      = bash: 允许冒号作为标识符……
 }; fork
 ```
 
-> 很快系统资源就会被耗尽.
+#tip("Tip")[
+很快系统资源就会被耗尽.
+]
 
 === 这次你们记住 Fork 了！
 
@@ -161,9 +168,10 @@ systemd-+-ModemManager---2*[{ModemManager}]
         ...
 ```
 
-> fork 是 unix 世界里面创建进程的唯一方法 > 例如, 先把 1-100,000,000
-的质数算出来, 然后 fork 10 个进程, 接下来这 10
-个进程就可以共享先前这个算出来的进程表
+#tip("Tip")[
+- `fork` 是 unix 世界里面创建进程的唯一方法
+- 例如, 先把 1-100,000,000 的质数算出来, 然后 fork 10 个进程, 接下来这 10 个进程就可以共享先前这个算出来的进程表
+]
 
 === 理解 fork: 习题 (1)
 
@@ -312,8 +320,10 @@ UNIX 的答案: `execve`
   - `PS1`: shell 的提示符
   - `export`: 告诉 shell 在创建子进程时设置环境变量
 - 小技巧：`export ARCH=x86_64-qemu` 或 `export ARCH=native`
-  - 上学期的 `AM_HOME` 终于破案了 > `execve`不仅要传入程序本身的参数,
-    还要传入程序运行的环境.
+  - 上学期的 `AM_HOME` 终于破案了 
+  #tip("Tip")[
+  `execve`不仅要传入程序本身的参数, 还要传入程序运行的环境.
+  ]
 
 ```c
 #include <stdio.h>
@@ -379,7 +389,9 @@ UNIX 的答案: `_exit`(立即摧毁状态机)
 
 - 销毁当前状态机，并允许有一个返回值
 - 子进程终止会通知父进程 (后续课程解释)
-> C标准库里面有个`exit`, 为了和这个系统调用作区分, 于是给系统调用添加了`_`
+#tip("Tip")[
+C标准库里面有个`exit`, 为了和这个系统调用作区分, 于是给系统调用添加了`_`
+]
 
 这个简单…… 但问题来了：多线程程序怎么办？
 
@@ -398,5 +410,6 @@ UNIX 的答案: `_exit`(立即摧毁状态机)
   - 不会调用 `atexit`
 
 
-> The `atexit()` function registers the given function to be called at normal
-process termination, either via `exit(3)` or via return from the program's `main()`.
+#tip("Tip")[
+The `atexit()` function registers the given function to be called at normal process termination, either via `exit(3)` or via return from the program's `main()`.
+]

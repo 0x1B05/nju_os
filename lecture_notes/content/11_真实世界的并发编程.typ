@@ -5,13 +5,11 @@
 
 == 高性能计算中的并行编程
 
-[CRAY-1 Supercomputer, “the world's most expensive love-seat” 1976, 138 MFLOPS @
-115kW](https://dl.acm.org/doi/10.1145/359327.359336)
+#link("https://dl.acm.org/doi/10.1145/359327.359336")[CRAY-1 Supercomputer, “the world's most expensive love-seat” 1976, 138 MFLOPS \@ 115kW]
 
 === (经典) 高性能计算
 
-> “A technology that harnesses the power of supercomputers or computer clusters
-to solve complex problems requiring massive computation.” (IBM)
+_*“A technology that harnesses the power of supercomputers or computer clusters to solve complex problems requiring massive computation.” (IBM)*_
 
 源自数值密集型科学计算任务
 
@@ -20,7 +18,7 @@ to solve complex problems requiring massive computation.” (IBM)
   - 大到宇宙小到量子，有模型就能模拟
 - 矿厂 (现在不那么热了)
   - 纯粹的 hash 计算
-- [ HPC-China 100 ](http://www.hpc100.cn/top100/21/)
+- #link("http://www.hpc100.cn/top100/21/")[ HPC-China 100 ]
 
 === 高性能计算程序：特点
 
@@ -34,7 +32,7 @@ to solve complex problems requiring massive computation.” (IBM)
 
 - 通常计算图容易静态切分 (机器-线程两级任务分解)
 - 生产者-消费者解决一切
-- [ MPI ](https://hpc-tutorials.llnl.gov/mpi/) - “a specification for the
+- #link("https://hpc-tutorials.llnl.gov/mpi/")[ MPI ] - “a specification for the
   developers and users of message passing libraries”, [ OpenMP
   ](https://www.openmp.org/) - “multi-platform shared-memory parallel programming
   in C/C++ and Fortran”
@@ -152,7 +150,7 @@ GPT-3: [ Language models are few-shot learners
 ](https://arxiv.org/abs/2005.14165)
 
 - Transformer 架构
-  - [ Attention Is All You Need ](https://arxiv.org/abs/1706.03762)
+  - #link("https://arxiv.org/abs/1706.03762")[ Attention Is All You Need ]
 - 175B 参数 (~300GB VRAM, FP-16)
 - GPT-3 single training run cost: ~\$5,000,000
   - 美国人断供芯片 = 三体人行为

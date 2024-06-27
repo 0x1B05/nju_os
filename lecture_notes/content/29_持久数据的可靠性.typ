@@ -125,7 +125,7 @@ RAID (虚拟化) = 虚拟磁盘块到物理磁盘块的 “映射”。
 - 革了 “高可靠性磁盘” 的命
   - 成为今天服务器的标准配置
 - 类似的里程碑
-  - [ The Google file system ](https://dl.acm.org/doi/10.1145/1165389.945450)
+  - #link("https://dl.acm.org/doi/10.1145/1165389.945450")[ The Google file system ]
     (SOSP'03) 和 [ MapReduce: Simplified data processing on large clusters
     ](https://dl.acm.org/doi/10.5555/1251254.1251264) (OSDI'04) 开启 “大数据” 时代
 
@@ -159,7 +159,7 @@ bitmap, and new data block have been written to disk). >
 
 - [ SQCK: A declarative file system checker
   ](https://dl.acm.org/doi/10.5555/1855741.1855751) (OSDI'08)
-- [ Towards robust file system checkers ](https://dl.acm.org/doi/10.1145/3281031)
+- #link("https://dl.acm.org/doi/10.1145/3281031")[ Towards robust file system checkers ]
   (FAST'18)
   - “widely used file systems (EXT4, XFS, BtrFS, and F2FS) may leave the file system
     in an uncorrectable state if the repair procedure is interrupted unexpectedly”

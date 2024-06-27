@@ -214,7 +214,7 @@ Lockdep 规约 (Specification)
 - 检查是否存在 x⇝y∧y⇝x
   - 我们有一个 “山寨版” 的例子
 
-[ Lockdep 的实现 ](https://jyywiki.cn/OS/OS_Lockdep.html)
+#link("https://jyywiki.cn/OS/OS_Lockdep.html")[ Lockdep 的实现 ]
 
 - Since Linux Kernel 2.6.17, also in [ OpenHarmony
   ](https://gitee.com/openharmony)!
@@ -239,7 +239,7 @@ x≺y∨y≺x
 
 现代复杂软件系统必备的支撑工具
 
-- [ AddressSanitizer ](https://clang.llvm.org/docs/AddressSanitizer.html) (asan);
+- #link("https://clang.llvm.org/docs/AddressSanitizer.html")[ AddressSanitizer ] (asan);
   ([ paper
   ](https://www.usenix.org/conference/atc12/technical-sessions/presentation/serebryany)):
   非法内存访问
@@ -247,11 +247,11 @@ x≺y∨y≺x
     double-free, ...
   - Linux Kernel 也有 [ kasan
     ](https://www.kernel.org/doc/html/latest/dev-tools/kasan.html)
-- [ ThreadSanitizer ](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html)
+- #link("https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html")[ ThreadSanitizer ]
   (tsan): 数据竞争
-- [ MemorySanitizer ](https://clang.llvm.org/docs/MemorySanitizer.html) (msan):
+- #link("https://clang.llvm.org/docs/MemorySanitizer.html")[ MemorySanitizer ] (msan):
   未初始化的读取
-- [ UBSanitizer ](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html)
+- #link("https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html")[ UBSanitizer ]
   (ubsan): undefined behavior
   - Misaligned pointer, signed integer overflow, ...
   - Kernel 会带着 -fwrapv 编译
@@ -345,9 +345,9 @@ while (xchg(&lk, LOCKED) == LOCKED) {
 
 === 防御性编程：低配版 AddressSanitizer (L1)
 
-内存分配要求：已分配内存 S=[ℓ0 ​ ,r0 ​)∪[ℓ1 ​ ,r1 ​)∪…
+内存分配要求：已分配内存 `S=[ℓ0  ,r0 )∪[ℓ1  ,r1 )∪…`
 
-- kalloc(s) 返回的 [ℓ,r) 必须满足 [ℓ,r)∩S=∅
+- `kalloc(s)` 返回的 [ℓ,r) 必须满足 [ℓ,r)∩S=∅
   - thread-local allocation + 并发的 free 还蛮容易弄错的
 
 ```c
