@@ -57,11 +57,11 @@ Shell: Kernel 的 “外壳”
 
 “Unix is user-friendly; it's just choosy about who its friends are.”
 
-但如果把 shell 理解成编程语言，“不好用” 好像也没什么毛病了 你见过哪个编程语言
-“好用” 的？
+但如果把 shell 理解成编程语言，“不好用” 好像也没什么毛病了 你见过哪个编程语言 “好用” 的？
 
-> (UNIX 世界有很多历史遗留约定), 在当时那个很紧凑的计算力下,
-做了一个既方便编译器实现, 又比较好用的妥协.
+#tip("Tip")[
+(UNIX 世界有很多历史遗留约定), 在当时那个很紧凑的计算力下, 做了一个既方便编译器实现, 又比较好用的妥协.
+]
 
 === The Shell Programming Language
 
@@ -85,7 +85,9 @@ Job control
 shell 语言表达式的值是什么呢? -> 翻译成系统调用. 先做字符串的预编译,
 基于文本的替换. 解析成语法树, 最终翻译成系统调用的序列.
 
-> shell 是 kernel 和人之间的桥梁
+#tip("Tip")[
+shell 是 kernel 和人之间的桥梁
+]
 
 === 人工智能时代，我们为什么还要读手册？
 
@@ -364,8 +366,8 @@ Open question: 我们能否从根本上改变管理操作系统的方式？
 
 系统管理与语言模型
 
-- fish, zsh, [ Warp ](https://www.warp.dev/), ...
-- Stackoverflow, tldr, [ thef\*\*k ](https://github.com/nvbn/thefuck) (自动修复)
+- fish, zsh, #link("https://www.warp.dev/")[ Warp ], ...
+- Stackoverflow, tldr, #link("https://github.com/nvbn/thefuck")[ thef\*\*k ] (自动修复)
 - Command palette of vscode (Ctrl-Shift-P)
 - Predictable
   - 流程很快 (无需检查)，但可能犯傻

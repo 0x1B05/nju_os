@@ -1,12 +1,12 @@
 #import "template.typ": *
 
 #show: template.with(
-  title: [SimpleNote],
-  short_title: "SimepleNote",
+  title: [OS - JYY Lecture Notes],
+  short_title: "Lecture Notes",
   description: [
-    此模板修改自 #link("https://github.com/jskherman/jsk-lecnotes")[jsk-lecnotes]  \ Winter 2023
+    JYY OS-2024 课程笔记
   ],
-  date: datetime(year: 2023, month: 12, day: 19),
+  date: datetime(year: 2023, month: 09, day: 22),
   authors: (
     (
       name: "0x1B05",

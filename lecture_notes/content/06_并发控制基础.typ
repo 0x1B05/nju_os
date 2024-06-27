@@ -183,9 +183,13 @@ exclusion problem” (IPL, 1981)
   - 这两个操作的顺序影响算法的正确性吗？
 - 是否存在 “两个人谁都无法进入临界区” (liveness)、“对某一方不公平” (fairness)
   等行为？
-  - 都转换成图 (状态空间) 上的遍历问题了！ > 完全理解非常困难，所以要借助model
-    checker. > 有合法状态以及非法状态，如果存在合法状态->非法状态的一条通路，寄！ >
-    不存在死锁应该怎么在状态图上表示？
+  - 都转换成图 (状态空间) 上的遍历问题了！ 
+
+#tip("Tip")[
+- 完全理解非常困难，所以要借助model checker. 
+- 有合法状态以及非法状态，如果存在合法状态->非法状态的一条通路，寄！ 
+- 不存在死锁应该怎么在状态图上表示？
+]
 
 === Model Checker 和自动化
 
@@ -220,8 +224,10 @@ exclusion problem” (IPL, 1981)
   - 编译器提供 `__sync_synchronize()` 函数
     - x86: `mfence;` ARM: `dmb ish;` RISC-V: `fence rw, rw`
     - 同时含有一个 compiler barrier
-> `x = 1`,`y=2`在正常情况下就有可能被编译器优化,
-乱序执行。而如果先贴名字再举旗子的话，peterson算法是错误的。
+
+#tip("Tip")[
+`x = 1`,`y=2`在正常情况下就有可能被编译器优化, 乱序执行。而如果先贴名字再举旗子的话，peterson算法是错误的。
+]
 
 === 🌶️ 维持实现到模型的对应
 
@@ -310,7 +316,7 @@ unlock()
 
 编译器到底做了什么？
 
-- 推荐：[ godbolt.org ](http://godbolt.org/)，你不用装那些 cross compiler 了
+- 推荐：#link("http://godbolt.org/")[ godbolt.org ]，你不用装那些 cross compiler 了
   - 你甚至可以看到 compiler barrier 是如何在优化中传递的
     - 再一次：自动化 & 可视化的意义
   - 不懂可以把代码直接扔给 ChatGPT
@@ -342,7 +348,9 @@ for (int i = 0; i < N; i++)
   asm volatile("lock incq %0" : "+m"(sum));
 ```
 
-> 如果把`lock`去掉，那就是上一节的sum. 加上这个`lock`之后，显著地慢了。
+#tip("Tip")[
+如果把`lock`去掉，那就是上一节的`sum`. 加上这个`lock`之后，显著地慢了。
+]
 
 ```
 > gcc -O2 sum-atomic.c && time ./a.out
@@ -375,4 +383,4 @@ Acquire/release semantics
   - `x.load()`/`x.store()` 会根据 [ memory order
     ](https://en.cppreference.com/w/cpp/atomic/memory_order) 插入 `fence`
   - `x.fetch_add()` 将会保证 `cst` (sequentially consistent)
-    - 去 [ godbolt ](https://godbolt.org/) 上试一下吧
+    - 去 #link("https://godbolt.org/")[ godbolt ] 上试一下吧

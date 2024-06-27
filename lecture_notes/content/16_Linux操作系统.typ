@@ -23,10 +23,10 @@ _25 Aug 1991, The Birthday of Linux > Hello, everybody out there using minix –
 
 - Minix1 (1987): UNIXv7 兼容
   - Linus 实现 Linux 的起点
-- [ Minix2 ](http://download.minix3.org/previous-versions/Intel-2.0.4/) (1997):
+- #link("http://download.minix3.org/previous-versions/Intel-2.0.4/")[ Minix2 ] (1997):
   POSIX 兼容
   - 更加完备的系统, 书后附全部内核代码
-- [ Minix3 ](http://minix3.org/) (2006): POSIX/NetBSD 兼容
+- #link("http://minix3.org/")[ Minix3 ] (2006): POSIX/NetBSD 兼容
   - 一度是世界上应用最广的操作系统
     - Intel ME 人手一个
 
@@ -37,7 +37,7 @@ _25 Aug 1991, The Birthday of Linux > Hello, everybody out there using minix –
 - Andrew Tanenbaum 做出了 “官方回应”
   - 觉得 “太落后”
 - Linus 完全不服气
-  - [ 全文 ](https://www.oreilly.com/openbook/opensources/book/appa.html)
+  - #link("https://www.oreilly.com/openbook/opensources/book/appa.html")[ 全文 ]
 - Ken Thompson 也参与了讨论
   - 他已经在 ~10 年前获得了图灵奖……
 
@@ -65,7 +65,7 @@ Kernel(一个可执行的二进制序列, 由硬件厂商加载到内存)
 
 Linux Kernel 系统调用上的发行版和应用生态
 
-- 系统工具 [ coreutils ](https://www.gnu.org/software/coreutils/coreutils.html), [
+- 系统工具 #link("https://www.gnu.org/software/coreutils/coreutils.html")[ coreutils ], [
   binutils ](https://www.gnu.org/software/binutils/), [ systemd
   ](https://systemd.io/), ... > systemd 才是进程树的根, 但是实际上系统的第一个进程`init`,
   并不是`systemd`, 为啥? 后面解答.
@@ -404,7 +404,7 @@ lrwxrwxrwx 1 root root 20 Sep 20 00:57 /usr/sbin/init -> /lib/systemd/systemd
 
 这个时候`systemd`就接管了.
 
-=== 例子: [ NOILinux Lite ](https://zhuanlan.zhihu.com/p/619237809)
+=== 例子: #link("https://zhuanlan.zhihu.com/p/619237809")[ NOILinux Lite ]
 
 在 init 时多做一些事
 

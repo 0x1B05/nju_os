@@ -6,7 +6,7 @@
 
 === Computer Science 的主线
 
-看看 [ csrankings ](https://csrankings.org/) 上的大类 (排名仅供娱乐)
+看看 #link("https://csrankings.org/")[ csrankings ] 上的大类 (排名仅供娱乐)
 
 - Theory
   - 什么是 “计算”
@@ -53,7 +53,7 @@
 代码里的细节
 
 - Guidelines
-  - [ Google ](https://google.github.io/styleguide/cppguide.html), [ GNU
+  - #link("https://google.github.io/styleguide/cppguide.html")[ Google ], [ GNU
     ](https://www.gnu.org/prep/standards/html_node/Writing-C.html), [ CERT-C
     ](https://www.gnu.org/prep/standards/html_node/Writing-C.html)
 - 变量起哪些名字？
@@ -69,7 +69,7 @@
 
 mosaic.py
 
-Following [ PEP-8 ](https://pep8.org/) 每行 80 个字符不会出现 “过度复杂的行”
+Following #link("https://pep8.org/")[ PEP-8 ] 每行 80 个字符不会出现 “过度复杂的行”
 
 === On the Naturalness of Programs
 
@@ -80,9 +80,9 @@ Following [ PEP-8 ](https://pep8.org/) 每行 80 个字符不会出现 “过度
 
 Programming for fun
 
-- [ The International Obfuscated C Code Contest ](https://www.ioccc.org/)
+- #link("https://www.ioccc.org/")[ The International Obfuscated C Code Contest ]
   - 写出绝对不可读，但又绝对可用的代码
-  - [ 一个程序的诞生 ](https://jyywiki.cn/pages/OS/img/ioccc-spoiler.html)
+  - #link("https://jyywiki.cn/pages/OS/img/ioccc-spoiler.html")[ 一个程序的诞生 ]
 
 === Timothy Roscoe's Keynote on OSDI/ATC'21
 

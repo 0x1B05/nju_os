@@ -520,9 +520,9 @@ Game Genie: 一个 Look-up Table (LUT)
 
 - 做个驱动 (可编程键盘/鼠标)
 - 利用操作系统/窗口管理器提供的 API
-  - [ xdotool ](https://github.com/jordansissel/xdotool) (我们用这玩意测试 vscode
+  - #link("https://github.com/jordansissel/xdotool")[ xdotool ] (我们用这玩意测试 vscode
     的插件)
-  - [ evdev ](https://www.kernel.org/doc/html/latest/input/input.html)
+  - #link("https://www.kernel.org/doc/html/latest/input/input.html")[ evdev ]
     (按键显示脚本；主播常用)
 
 === 入侵进程地址空间 (3): 变速齿轮

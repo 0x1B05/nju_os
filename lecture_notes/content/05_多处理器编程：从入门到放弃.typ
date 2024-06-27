@@ -235,7 +235,9 @@ void setbuf(FILE *stream, char *buffer);
 
 在 C 语言中，文件 I/O 操作通常是缓冲的, 即当你调用一个输出函数（比如 `printf` 或 `putchar`）时，数据并不是立即写入文件，而是先写入一个缓冲区。只有当缓冲区满了，或者你显式地刷新缓冲区（比如通过调用 `fflush`），数据才会真正写入文件。
 
-> 需要注意的是，`setbuf` 必须在打开文件流后、进行任何其他操作前调用。否则，其行为是未定义的。
+#tip("Tip")[
+需要注意的是，`setbuf` 必须在打开文件流后、进行任何其他操作前调用。否则，其行为是未定义的。
+]
 
 ```c
 #include <stdio.h>
@@ -396,111 +398,111 @@ balance = 18446744073709551516
 
     会发生什么？正常
 
-    ==== 例子：求和
+#example("求和")[
+分两个线程，计算 `1+1+1+…+1` (共计 `2n` 个 `1`)
 
-    分两个线程，计算 1+1+1+…+1 (共计 2n 个 1)
+```c
+#define N 100000000
+long sum = 0;
 
-    ```c
-    #define N 100000000
-    long sum = 0;
+void Tsum() { for (int i = 0; i < N; i++) sum++; }
 
-    void Tsum() { for (int i = 0; i < N; i++) sum++; }
+int main() {
+create(Tsum);
+create(Tsum);
+join();
+printf("sum = %ld\n", sum);
+}
+```
 
-    int main() {
-    create(Tsum);
-    create(Tsum);
-    join();
-    printf("sum = %ld\n", sum);
-    }
-    ```
+可能的结果
 
-    可能的结果
+- `119790390`, `99872322` (结果可以比 `N` 还要小), ...
+- 直接使用汇编指令也不行
+]
 
-    - 119790390, 99872322 (结果可以比 N 还要小), ...
-    - 直接使用汇编指令也不行
+=== 放弃 (1)：指令/代码执行原子性假设
 
-    === 放弃 (1)：指令/代码执行原子性假设
+_“处理器一次执行一条指令” 的基本假设在今天的计算机系统上不再成立 (我们的模型作出了简化的假设)。_
 
-    _“处理器一次执行一条指令” 的基本假设在今天的计算机系统上不再成立 (我们的模型作出了简化的假设)。_
+- 单处理器多线程
+- 线程在运行时可能被中断，切换到另一个线程执行
+- 多处理器多线程
+- 线程根本就是并行执行的
+- (历史) 1960s，大家争先在共享内存上实现原子性 (互斥)
+- 但几乎所有的实现都是错的，直到 #link("https://en.wikipedia.org/wiki/Dekker's_algorithm")[ Dekker's Algorithm ]，还只能保证两个线程的互斥
 
-    - 单处理器多线程
-    - 线程在运行时可能被中断，切换到另一个线程执行
-    - 多处理器多线程
-    - 线程根本就是并行执行的
-    - (历史) 1960s，大家争先在共享内存上实现原子性 (互斥)
-    - 但几乎所有的实现都是错的，直到 [ Dekker's Algorithm ](https://en.wikipedia.org/wiki/Dekker's_algorithm)，还只能保证两个线程的互斥
+=== 放弃原子性假设的后果
 
-    === 放弃原子性假设的后果
+我们都知道 `printf` 是有缓冲区的 (为什么？), 那`printf` 还能在多线程程序里调用吗？如果执行 `buf[pos++] = ch` (`pos` 共享) 不就 💥 了吗？
 
-    我们都知道 `printf` 是有缓冲区的 (为什么？), 那`printf` 还能在多线程程序里调用吗？如果执行 `buf[pos++] = ch` (`pos` 共享) 不就 💥 了吗？
+```c
+void thread1() { while (1) { printf("a"); } }
+void thread2() { while (1) { printf("b"); } }
+```
 
-    ```c
-    void thread1() { while (1) { printf("a"); } }
-    void thread2() { while (1) { printf("b"); } }
-    ```
+RTFM! -> 我们发现`printf`是thread safe的.
 
-    RTFM! -> 我们发现`printf`是thread safe的.
+== 放弃 (2)：执行顺序
 
-    == 放弃 (2)：执行顺序
+=== 例子：求和 (再次出现)
 
-    === 例子：求和 (再次出现)
+分两个线程，计算 1+1+1+…+1 (共计 2n 个 1)
 
-    分两个线程，计算 1+1+1+…+1 (共计 2n 个 1)
+```c
+#define N 100000000
+long sum = 0;
 
-    ```c
-    #define N 100000000
-    long sum = 0;
+void Tsum() { for (int i = 0; i < N; i++) sum++; }
 
-    void Tsum() { for (int i = 0; i < N; i++) sum++; }
+int main() {
+create(Tsum);
+create(Tsum);
+join();
+printf("sum = %ld\n", sum);
+}
+```
 
-    int main() {
-    create(Tsum);
-    create(Tsum);
-    join();
-    printf("sum = %ld\n", sum);
-    }
-    ```
+如果添加编译优化？
 
-    如果添加编译优化？
+- -O1: 100000000 😱😱
+- -O2: 200000000 😱😱😱
 
-    - -O1: 100000000 😱😱
-    - -O2: 200000000 😱😱😱
+`gcc -O1 sum.c && objdump -d ./a.out > O1.txt`
+`gcc -O2 sum.c && objdump -d ./a.out > O2.txt`
 
-    `gcc -O1 sum.c && objdump -d ./a.out > O1.txt`
-    `gcc -O2 sum.c && objdump -d ./a.out > O2.txt`
+O1.txt:
 
-    O1.txt:
+```
+000000000000117f <Tsum>:
+117f: 48 8b 15 da 2e 00 00 mov 0x2eda(%rip),%rdx = 4060 <sum>
 
-    ```
-    000000000000117f <Tsum>:
-    117f: 48 8b 15 da 2e 00 00 mov 0x2eda(%rip),%rdx = 4060 <sum>
+1186: 48 8d 42 01 lea 0x1(%rdx),%rax
+118a: 48 81 c2 01 e1 f5 05 add $0x5f5e101,%rdx 1191: 48 89 c1 mov %rax,%rcx
+1194: 48 83 c0 01 add $0x1,%rax
+1198: 48 39 d0 cmp %rdx,%rax
+119b: 75 f4 jne 1191 <Tsum+0x12>
 
-    1186: 48 8d 42 01 lea 0x1(%rdx),%rax
-    118a: 48 81 c2 01 e1 f5 05 add $0x5f5e101,%rdx 1191: 48 89 c1 mov %rax,%rcx
-    1194: 48 83 c0 01 add $0x1,%rax
-    1198: 48 39 d0 cmp %rdx,%rax
-    119b: 75 f4 jne 1191 <Tsum+0x12>
+119d: 48 89 0d bc 2e 00 00 mov %rcx,0x2ebc(%rip) = 4060 <sum>
+11a4: c3 ret
+```
 
-    119d: 48 89 0d bc 2e 00 00 mov %rcx,0x2ebc(%rip) = 4060 <sum>
-    11a4: c3 ret
-    ```
+中间是个循环， 循环完之后再赋值
 
-    中间是个循环， 循环完之后再赋值
+```
+%rdx = sum
 
-    ```
-    %rdx = sum
+loop
 
-    loop
+sum = %rcx
+```
 
-    sum = %rcx
-    ```
+O2.txt:
 
-    O2.txt:
-
-    ```
-    00000000000011e0 <Tsum>:
-    11e0: 48 81 05 75 2e 00 00 addq $0x5f5e100,0x2e75(%rip) = 4060 <sum> 11e7: 00 e1
-    f5 05 11eb: c3 ret 11ec: 0f 1f 40 00 nopl 0x0(%rax)
+```
+00000000000011e0 <Tsum>:
+11e0: 48 81 05 75 2e 00 00 addq $0x5f5e100,0x2e75(%rip) = 4060 <sum> 11e7: 00 e1
+f5 05 11eb: c3 ret 11ec: 0f 1f 40 00 nopl 0x0(%rax)
 ```
 
 直接赋值, 循环都没了。
@@ -509,7 +511,9 @@ balance = 18446744073709551516
 sum += 0x5f5e100 ret
 ```
 
-> 不同的编译器也许是不同地结果。
+#tip("Tip")[
+不同的编译器也许是不同地结果。
+]
 
 === 放弃 (2)：程序的顺序执行假设
 
@@ -548,8 +552,7 @@ while (!done) ;
 
 == 放弃 (3)：处理器间的可见性
 
-=== 例子
-
+#example("Example")[
 ```c int x = 0, y = 0;
 
 void T1() { x = 1; int t = y;// Store(x); Load(y)
@@ -559,10 +562,11 @@ void T2() { y = 1; int t = x;// Store(y); Load(x)
 printf("%d", t); }
 ```
 
-遍历模型告诉我们：01, 10, 11
+遍历模型告诉我们：`01`, `10`, `11`
 
 - 机器永远是对的
 - Model checker 的结果和实际的结果不同 → 假设错了
+]
 
 === 🌶️ 现代处理器也是 (动态) 编译器！
 
@@ -576,7 +580,9 @@ printf("%d", t); }
 
 - 与编译器一样，做 “顺序执行” 假设：没有其他处理器 “干扰”
 - 每一周期执行尽可能多的 $μ$op - 多路发射、乱序执行、按序提交
-  > 通过流水线可以实现IPC>1, 同时执行多个指令。
+  #tip("Tip")[
+  通过流水线可以实现IPC>1, 同时执行多个指令。
+  ]
 
 === 放弃 (3)：多处理器间内存访问的即时可见性
 
@@ -610,12 +616,16 @@ _宽松内存模型的目的是使单处理器的执行更高效。_
 
 目前各大架构的系统模拟器最困难的地方就是模拟内存模型, 他们不知道哪个地方会被插入执行， 只能每行代码都加一个`fence`。
 
-> x86 已经是市面上能买到的 “最强” 的内存模型了 😂
+#tip("Tip")[
+x86 已经是市面上能买到的 “最强” 的内存模型了 😂
+]
 
 - 这也是 Intel 自己给自己加的包袱
-- 看看 [ ARM/RISC-V ](https://research.swtch.com/mem-weak@2x.png) 吧，根本就是个分布式系统
+- 看看 #link("https://research.swtch.com/mem-weak@2x.png")[ ARM/RISC-V ] 吧，根本就是个分布式系统
 #image("images/2023-11-04-10-15-39.png")
-> 通过队列, 可以看到total store order.
-> 全局状态：1 2还是2 1
+#tip("Tip")[
+- 通过队列, 可以看到total store order.
+- 全局状态：`1 2`还是`2 1`
+]
 
-(x86-TSO in [ Hardware memory models ](https://research.swtch.com/hwmm) by Russ Cox)
+(x86-TSO in #link("https://research.swtch.com/hwmm")[ Hardware memory models ] by Russ Cox)

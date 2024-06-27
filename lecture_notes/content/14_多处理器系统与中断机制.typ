@@ -21,10 +21,10 @@ Multiprocessing Extension: 多个处理器，一个地址空间
 
 态机模型发生了改变
 
-- 状态：共享内存和每个处理器的内部状态 (M,R1,R2,…,Rn ​)
+- 状态：共享内存和每个处理器的内部状态 (M,R1,R2,…,Rn )
 
 - 状态迁移：处理器 t 分隔出一个 “单处理器计算机”
-  - 执行 (M,Rt ​)→(M′,Rt′​) (M,R1​ ,R2,…,Rn ​)→(M′,R1,R2,…,Rt′,…,Rn ​)
+  - 执行 (M,Rt )→(M′,Rt′) (M,R1 ,R2,…,Rn )→(M′,R1,R2,…,Rt′,…,Rn )
 
 === 简易多处理器内核 (L1 的模型)
 
@@ -109,7 +109,7 @@ struct MiniRV32IMAState {
 
 - 对不起，没有中断
   - 在 gdb 里可以看到 flags 寄存器 (FL_IF)
-  - [ CLI — Clear Interrupt Flag ](https://www.felixcloutier.com/x86/cli)
+  - #link("https://www.felixcloutier.com/x86/cli")[ CLI — Clear Interrupt Flag ]
     - `#GP(0)` If CPL is greater than IOPL and less than 3
     - 试一试 `asm volatile ("cli");`
 - 死循环也可以被打断
@@ -137,12 +137,12 @@ void iset(bool enable);
 
 状态
 
-- 共享内存和每个处理器的内部状态 (M,R1 ,R2 ,…,Rn ​)
+- 共享内存和每个处理器的内部状态 (M,R1 ,R2 ,…,Rn )
 
 状态迁移
 
-1. 处理器 t 执行一步 (M,Rt ​)→(M′,Rt′​)
-  - 新状态为 (M′,R1 ,R2 ,…,Rt′,…,Rn ​)
+1. 处理器 t 执行一步 (M,Rt )→(M′,Rt′)
+  - 新状态为 (M′,R1 ,R2 ,…,Rt′,…,Rn )
 2. 处理器 t 响应中断
 
 假设 race-freedom

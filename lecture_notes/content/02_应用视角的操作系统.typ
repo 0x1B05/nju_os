@@ -69,7 +69,7 @@ syscall                 = );
 gcc 会进行预编译 (可以使用 *ASSEMBLER* 宏区分汇编/C 代码) ANSI Escape Code
 的更多应用
 
-[ vi.c ](https://git.busybox.net/busybox/tree/editors/vi.c) from busybox
+#link("https://git.busybox.net/busybox/tree/editors/vi.c")[ vi.c ] from busybox
 `dialog --msgbox 'Hello, OS World!' 8 32`
 `ssh -o 'HostKeyAlgorithms +ssh-rsa' sshtron.zachlatta.com`
 更重要的问题: 怎样才能变强？
@@ -101,7 +101,9 @@ M[R[pc]], 执行)->次态(M1,R1)-(系统调用,syscall)->
 
 你能写一个 C 语言代码的 “解释器” 吗？
 
-> gdb 类似于一个 C 语言的解释器
+#tip("Tip")[
+gdb 类似于一个 C 语言的解释器
+]
 
 如果能, 你就完全理解了高级语言 和 “电路模拟器”, “RISC-V 模拟器” 类似 实现 gdb
 里的 “单步执行”
@@ -167,7 +169,10 @@ Language ](https://cil-project.github.io/cil/)) 和[ 解释器
 
 - 状态 = 堆 + 栈
 - 初始状态 = main 的第一条语句
-- 状态迁移 = 执行一条语句中的一小步 > 这还只是 “粗浅” 的理解
+- 状态迁移 = 执行一条语句中的一小步 
+#tip("Tip")[
+这还只是 “粗浅” 的理解
+]
 
 Talk is cheap. Show me the code. (Linus Torvalds)
 任何真正的理解都应该落到可以执行的代码
@@ -223,7 +228,9 @@ void hanoi2(int n, char from, char to, char via) {
 - 返回:把顶部的栈帧抹除;
 - 执行:取顶部栈帧的 pc 执行;
 
-> 赋值语句, if 语句, goto 语句这三个就可以改写所有的 C 程序. 这就是编译器!
+#tip("Tip")[
+赋值语句, `if` 语句, `goto` 语句这三个就可以改写所有的 C 程序. 这就是编译器!
+]
 
 == 理解编译器
 
@@ -278,12 +285,12 @@ binary editor 插件
 Core Utilities (coreutils)
 
 - Standard programs for text and file manipulation
-- 系统中安装的是 [ GNU Coreutils ](https://www.gnu.org/software/coreutils/)
-  - 有较小的替代品 [ busybox ](https://www.busybox.net/)
+- 系统中安装的是 #link("https://www.gnu.org/software/coreutils/")[ GNU Coreutils ]
+  - 有较小的替代品 #link("https://www.busybox.net/")[ busybox ]
 
 系统/工具程序
 
-bash, [ binutils ](https://www.gnu.org/software/binutils/), apt, ip, ssh, vim,
+bash, #link("https://www.gnu.org/software/binutils/")[ binutils ], apt, ip, ssh, vim,
 tmux, jdk, python, ... 这些工具的原理不复杂 (例如 apt 是 dpkg 的套壳), 但琐碎 [
 Ubuntu Packages ](https://packages.ubuntu.com/) (和 apt-file 工具)
 支持文件名检索 其他各种应用程序
@@ -389,7 +396,9 @@ int main() {
 }
 ```
 
-> C 在没有显式`return`的时候会默认`return 0`
+#tip("Tip")[
+C 在没有显式`return`的时候会默认`return 0`
+]
 
 ```sh
 ❯ gcc hello.c
@@ -398,7 +407,9 @@ a.out: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically link
 f7feb1c, for GNU/Linux 3.2.0, not stripped
 ```
 
-> `file`可以帮忙猜一个文件是什么.
+#tip("Tip")[
+`file`可以帮忙猜一个文件是什么.
+]
 
 `objdump -d a.out`查看反汇编, 发现其实不多, 还发现把`printf`优化成了`puts@plt`,
 省了一个换行.`puts`函数真正的实现是在 libc 语言的标准库里.
@@ -529,10 +540,13 @@ $1 = (void *) 0x7fffffffe4c0
 0x0000000000000001 in ?? ()
 ```
 
-破案了, rsp 存储了当前线程的堆栈顶部的地址.这里弹出了一个非法的地址, 寄!
+破案了, `rsp` 存储了当前线程的堆栈顶部的地址.这里弹出了一个非法的地址, 寄!
 
-> RBP(Base Pointer): 栈底指针. > RSP(Stack Pointer): 栈顶指针. > EAX:
-通用寄存器.一个 32 位的寄存器, 经常用于存储函数的返回值或临时变量.
+#tip("Tip")[
+- RBP(Base Pointer): 栈底指针.
+- RSP(Stack Pointer): 栈顶指针.
+- EAX: 通用寄存器.一个 32 位的寄存器, 经常用于存储函数的返回值或临时变量.
+]
 
 ==== demo03
 
@@ -564,7 +578,7 @@ ed:
 Hello, OS World
 ```
 
-把 minimal 对应的 a.out 使用 vim 打开 然后`:%!xxd`
+把 `minimal` 对应的 `a.out` 使用 vim 打开 然后`:%!xxd`
 
 这也是一个命令行哲学, 举例:
 
@@ -850,7 +864,9 @@ execve("/usr/bin/ld",
 "-plugin-opt=-fresolution=/tmp/cc
 ```
 
-> 发现把所有中间结果 都输出到了临时文件里面.
+#tip("Tip")[
+发现把所有中间结果 都输出到了临时文件里面.
+]
 
 == 阅读材料
 
